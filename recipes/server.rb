@@ -103,9 +103,9 @@ hostgroups = Array.new
 
 if node['nagios']['monitor_chef_nodes']
   if node['nagios']['multi_environment_monitoring']
-    nodes = search(:node, "hostname:[* TO *]")
+    nodes = search(:node, "")
   else
-    nodes = search(:node, "hostname:[* TO *] AND chef_environment:#{node.chef_environment}")
+    nodes = search(:node, "chef_environment:#{node.chef_environment}")
   end
 end
 
@@ -152,6 +152,11 @@ unmanaged_hosts = nagios_bags.get('nagios_unmanagedhosts')
 serviceescalations = nagios_bags.get('nagios_serviceescalations')
 contacts = nagios_bags.get('nagios_contacts')
 contactgroups = nagios_bags.get('nagios_contactgroups')
+
+hosts_transformation = Hash.new
+search(:nagios_hostgroups, '*:*') do |hg|
+  hosts_transformation[hg['id']] = hg['transformation_map']
+end
 
 # Add unmanaged host hostgroups to the hostgroups array if they don't already exist
 unmanaged_hosts.each do |host|
@@ -276,7 +281,8 @@ end
 nagios_conf "hosts" do
   variables(:nodes => nodes,
             :unmanaged_hosts => unmanaged_hosts,
-            :hostgroups => hostgroups)
+            :hostgroups => hostgroups,
+            :hosts_transformation => hosts_transformation)
 end
 
 service "nagios" do

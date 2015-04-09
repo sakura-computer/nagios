@@ -6,7 +6,7 @@
 define service {
     service_description Nagios
     hostgroup_name      <%= node['nagios']['server_role'] %>
-    check_command       check-nagios
+    check_command       check_nagios
     contact_groups      admins
     use                 default-service
 }
@@ -14,10 +14,10 @@ define service {
 # Services defined by data bags
 <% @services.each do |service| -%>
   <%# Do not define a service that has no hostgroup or a hostgroup that doesn't exist (including the "all" hostgroup) %>
-  <% unless service['hostgroup_name'].nil? || !(@hostgroups.include?(service['hostgroup_name']) || service['hostgroup_name'] == "all") -%>
+  <% if not service['hostgroup_name'].nil? and ((@hostgroups & service['hostgroup_name']).sort == service['hostgroup_name'].sort or service['hostgroup_name'] == "all") -%>
 define service {
   service_description <%= service['description'] || service['id'] %>
-  hostgroup_name <%= service['hostgroup_name'] %>
+  hostgroup_name <%= service['hostgroup_name'].join(",") %>
   <% if service['use_existing_command'] -%>
   check_command <%= service['use_existing_command'] %>
   <% else -%>
@@ -27,12 +27,12 @@ define service {
   <% unless service['event_handler'].nil? %>
   event_handler <%= service['event_handler'] %>
   <% end %>
-  <% %w{check_interval retry_interval notification_interval}.each do |conf| %>
+  <% %w{check_interval retry_interval notification_interval normal_check_interval retry_check_interval freshness_threshold}.each do |conf| %>
     <% unless service[conf].nil? %>
   <%= conf %> <%= nagios_interval(service[conf]) %>
     <% end %>
   <% end %>
-  <% %w{passive_checks_enabled parallelize_check obsess_over_service check_freshness notifications_enabled event_handler_enabled flap_detection_enabled failure_prediction_enabled process_perf_data retain_status_information retain_nonstatus_information is_volatile check_period max_check_attempts contact_groups notification_options notification_period notes_url action_url}.each do |conf| %>
+  <% %w{passive_checks_enabled parallelize_check obsess_over_service check_freshness notifications_enabled event_handler_enabled flap_detection_enabled failure_prediction_enabled process_perf_data retain_status_information retain_nonstatus_information is_volatile check_period max_check_attempts contact_groups notification_options notification_period notes_url action_url active_checks_enabled stalking_options}.each do |conf| %>
     <% unless service[conf].nil? %>
   <%= conf %> <%= service[conf] %>
     <% end %>
