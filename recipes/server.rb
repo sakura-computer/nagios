@@ -138,7 +138,7 @@ end
 
 # Add all unique platforms to the array of hostgroups
 nodes.each do |n|
-  if !hostgroups.include?(n['os'])
+  if n['os'] && !hostgroups.include?(n['os'])
     hostgroups << n['os']
   end
 end
