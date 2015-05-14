@@ -109,3 +109,8 @@ default['nagios']['server']['web_server'] = :apache
 default['nagios']['server']['nginx_dispatch'] = :cgi
 default['nagios']['server']['stop_apache'] = false
 default['nagios']['server']['redirect_root'] = false
+
+# Need to use mpm_prefork since we are also using mod_php
+# For more info search the web for "Apache is running a threaded MPM, but your PHP Module is not
+# compiled to be threadsafe.  You need to recompile PHP."
+override['apache']['mpm'] = 'prefork'

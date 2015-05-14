@@ -25,22 +25,14 @@ end
 apache_site "000-default" do
   enable false
 end
+apache_site "default" do
+  enable false
+end
 
 public_domain = node['public_domain'] || node['domain']
 
-template "#{node['apache']['dir']}/sites-available/nagios3.conf" do
-  source "apache2.conf.erb"
-  mode 00644
-  variables( :public_domain => public_domain,
-      :nagios_url => node['nagios']['url']
-      )
-  if ::File.symlink?("#{node['apache']['dir']}/sites-enabled/nagios3.conf")
-    notifies :reload, "service[apache2]"
-  end
+web_app 'nagios3' do
+  template 'apache2.conf.erb'
+  variables :public_domain => public_domain,
+            :nagios_url => node['nagios']['url']
 end
-
-file "#{node['apache']['dir']}/conf.d/nagios3.conf" do
-  action :delete
-end
-
-apache_site "nagios3.conf"
