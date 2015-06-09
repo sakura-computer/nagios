@@ -142,6 +142,8 @@ nodes.each do |n|
     hostgroups << n['os']
   end
 end
+# hosts.cfg adds a host with the hostgroup below, so make sure it exists
+hostgroups << node['os']
 
 nagios_bags = NagiosDataBags.new
 services = nagios_bags.get('nagios_services')
