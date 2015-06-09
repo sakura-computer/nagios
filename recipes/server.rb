@@ -285,6 +285,10 @@ nagios_conf "hosts" do
             :hosts_transformation => hosts_transformation)
 end
 
+execute 'validate nagios' do
+  command "/usr/sbin/#{nagios_service_name} -v #{node['nagios']['conf_dir']}/nagios.cfg"
+end
+
 service "nagios" do
   service_name nagios_service_name
   supports :status => true, :restart => true, :reload => true
