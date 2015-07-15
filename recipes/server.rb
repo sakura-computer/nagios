@@ -275,7 +275,7 @@ nagios_conf "contacts" do
 end
 
 nagios_conf "hostgroups" do
-  variables(:hostgroups => hostgroups,
+  variables(:hostgroups => hostgroups.uniq,
             :search_hostgroups => hostgroup_list,
             :search_nodes => hostgroup_nodes)
 end
