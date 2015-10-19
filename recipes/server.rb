@@ -207,6 +207,12 @@ directory "#{node['nagios']['conf_dir']}/dist" do
   mode 00755
 end
 
+directory "#{node['nagios']['log_dir']}/archives" do
+  owner node['nagios']['user']
+  group node['nagios']['group']
+  mode 00755
+end
+
 directory node['nagios']['state_dir'] do
   owner node['nagios']['user']
   group node['nagios']['group']
