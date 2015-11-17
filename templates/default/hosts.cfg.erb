@@ -61,6 +61,9 @@ define host {
   <% else -%>
   hostgroups <%= (n.run_list.roles.to_a & @hostgroups).join(",") %>,<%= n['os'] %>
   <% end -%>
+  <% if node[:opsworks] -%>
+  hostgroups <%= node[:opsworks][:layers].keys[0] %>
+  <% end -%>
   <% end -%>
 }
 <% end -%>
