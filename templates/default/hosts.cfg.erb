@@ -17,10 +17,10 @@ define host {
 define host {
   host_name     <%= instance[0] %>
   use           generic-passive-host
-  address       <%= instance[1][:private_ip] %>
+  address       <%= instance[1][:ip] %>
   hostgroups    all,linux,mconf-live-servers
   _BBB_SALT     <%= node[:bbb][:salt] %>
-  _BBB_URL      <%= "http://#{instance[1][:public_dns_name]}/bigbluebutton/" %>
+  _BBB_URL      <%= "http://#{instance[1][:ip]}/bigbluebutton/" %>
   _BBB_PORT     80
 }
       <% end -%>
