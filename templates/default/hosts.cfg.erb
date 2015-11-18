@@ -19,7 +19,7 @@ define host {
   use           generic-passive-host
   address       <%= instance[1][:ip] %>
   hostgroups    all,linux,mconf-live-servers
-  _BBB_SALT     <%= node[:bbb][:salt] %>
+  _BBB_SALT     <%= node[:bbb][:enforce_salt] %>
   _BBB_URL      <%= "http://#{instance[1][:ip]}/bigbluebutton/" %>
   _BBB_PORT     80
 }
