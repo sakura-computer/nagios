@@ -37,6 +37,12 @@ else
   end
 end
 
+if [:opsworks]
+  node[:opsworks][:layers][:monitoring][:instances].each do |k, v|
+    mon_host << v[:private_ip]
+  end
+end
+
 include_recipe "nagios::client_#{node['nagios']['client']['install_method']}"
 
 directory "#{node['nagios']['nrpe']['conf_dir']}/nrpe.d" do
