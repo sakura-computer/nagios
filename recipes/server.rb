@@ -280,6 +280,17 @@ nagios_conf "contacts" do
             :serviceescalations => serviceescalations)
 end
 
+if node[:opsworks]
+  layers = node[:opsworks][:layers]
+  hostgroup_list = layers.keys
+  layers.each do |layer|
+    hostgroup_nodes[layer[0]] = layer[1][:instances].keys.join(",")
+  end
+end
+Chef::Log::info("***** hostgroups = #{hostgroups}")
+Chef::Log::info("***** hostgroup_list = #{hostgroup_list}")
+Chef::Log::info("***** hostgroup_nodes = #{hostgroup_nodes}")
+
 nagios_conf "hostgroups" do
   variables(:hostgroups => hostgroups.uniq,
             :search_hostgroups => hostgroup_list,
