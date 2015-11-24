@@ -281,11 +281,9 @@ nagios_conf "contacts" do
 end
 
 if node[:opsworks]
-  layers = node[:opsworks][:layers]
-  hostgroup_list = layers.keys
-  layers.each do |layer|
-    hostgroup_nodes[layer[0]] = layer[1][:instances].keys.join(",")
-  end
+  hostgroup_list = [:monitoring, :conference]
+  hostgroup_nodes[:monitoring] = node[:opsworks][:layers][:monitoring][:instances].keys.join(",")
+  hostgroup_nodes[:conference] = node[:opsworks][:layers][:conference][:instances].keys.join(",")
 end
 Chef::Log::info("***** hostgroups = #{hostgroups}")
 Chef::Log::info("***** hostgroup_list = #{hostgroup_list}")

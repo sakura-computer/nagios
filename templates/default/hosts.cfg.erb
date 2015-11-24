@@ -16,9 +16,9 @@ define host {
       <% layer[1][:instances].each do |instance| -%>
 define host {
   host_name     <%= instance[0] %>
-  use           generic-passive-host
+  use           server
   address       <%= instance[1][:ip] %>
-  hostgroups    all,linux,mconf-live-servers
+  hostgroups    all,linux,conference
   _BBB_SALT     <%= node[:bbb][:salt] %>
   _BBB_URL      <%= "http://#{instance[1][:ip]}/bigbluebutton/" %>
   _BBB_PORT     80
