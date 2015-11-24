@@ -37,9 +37,9 @@ else
   end
 end
 
-if [:opsworks]
-  node[:opsworks][:layers][:monitoring][:instances].each do |k, v|
-    mon_host << v[:private_ip]
+if node['opsworks']
+  node['opsworks']['layers']['monitoring']['instances'].each do |k, v|
+    mon_host << v['private_ip']
   end
 end
 
