@@ -59,10 +59,19 @@
   </Location>
 <% else -%>
   <Location />
+    AllowOverride all
+    Satisfy Any
+
     AuthName "Nagios Server"
     AuthType Basic
     AuthUserFile "<%= node['nagios']['conf_dir'] %>/htpasswd.users"
     require valid-user
+
+    SetEnvIf Request_URI "/hello.txt" healthcheck
+    Order Deny,Allow
+    Deny from all
+    Allow from env=healthcheck
+
   </Location>
 <% end -%>
 

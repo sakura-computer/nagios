@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 #
 # Author:: Joshua Sierles <joshua@37signals.com>
 # Author:: Joshua Timberman <joshua@opscode.com>
@@ -317,4 +318,11 @@ nagios_nrpecheck "check_nagios" do
   command "#{node['nagios']['plugin_dir']}/check_nagios"
   parameters "-F #{node["nagios"]["cache_dir"]}/status.dat -e 4 -C /usr/sbin/#{nagios_service_name}"
   action :add
+end
+
+################################################################################
+# ELBのヘルスチェック対応
+################################################################################
+file "/usr/share/nagios3/htdocs/hello.txt" do
+  content "hello."
 end
