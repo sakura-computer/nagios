@@ -19,8 +19,8 @@ define host {
   use           server
   address       <%= value[:ip] %>
   hostgroups    all,linux,conference
-  _BBB_SALT     <%= `curl http://#{node[:opsworks][:layers]['rails-app']['elb-load-balancers'][0][:dns_name]}/bigbluebutton/servers/salt?ip=#{value[:ip]}` %>
-  _BBB_URL      <%= "http://#{value[:ip]}/bigbluebutton/" %>
+  _BBB_SALT     <%= `curl http://#{node[:opsworks][:layers]['rails-app']['elb-load-balancers'][0][:dns_name]}/bigbluebutton/servers/salt?ip=#{key}.#{node[:webinar][:domain]` %>
+  _BBB_URL      <%= "http://#{#{key}.#{node[:webinar][:domain]}/bigbluebutton/" %>
   _BBB_PORT     80
 }
   <% end -%>
