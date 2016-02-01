@@ -4,18 +4,16 @@
 
 define hostgroup {
   hostgroup_name all
-  alias all
   members *
 }
-
 <% @hostgroups.sort.each do |h| -%>
 define hostgroup {
   hostgroup_name <%= h %>
   alias <%= h %>
 }
 <% end -%>
-<% 
-  @search_hostgroups.sort.each do |hostgroup| 
+<%
+  @search_hostgroups.sort.each do |hostgroup|
     if !@hostgroups.include?(hostgroup)
 -%>
 define hostgroup {
@@ -26,6 +24,6 @@ define hostgroup {
 <% end -%>
 }
 <%
-    end 
-  end 
+    end
+  end
 -%>
