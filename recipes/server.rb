@@ -284,6 +284,9 @@ end
 if node[:opsworks]
   hostgroup_list = [:monitoring, :conference]
   hostgroup_nodes[:monitoring] = node[:opsworks][:layers][:monitoring][:instances].keys.join(",")
+  if node[:opsworks][:layers][:monitoring][:instances].count == 0
+    hostgroup_nodes[:monitoring] << node[:opsworks][:instance][:hostname]
+  end
   hostgroup_nodes[:conference] = node[:opsworks][:layers][:conference][:instances].keys.join(",")
 end
 Chef::Log::info("***** hostgroups = #{hostgroups}")
