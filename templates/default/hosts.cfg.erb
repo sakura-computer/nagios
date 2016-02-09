@@ -24,12 +24,21 @@ define host {
   _BBB_PORT     80
 }
   <% end -%>
-  <% node[:opsworks][:layers][:monitoring][:instances].each do |key, value| -%>
+  <% if node[:opsworks][:layers][:monitoring][:instances].count > 0 %>
+    <% node[:opsworks][:layers][:monitoring][:instances].each do |key, value| -%>
 define host {
   host_name     <%= key %>
   use           server
   address       <%= value[:ip] %>
   hostgroups    all,linux,monitoring
+}
+    <% end -%>
+  <% else %>
+define host {
+    host_name     <%= node[:opsworks][:instance][:hostname] %>
+    use           server
+    address       <%= node[:opsworks][:instance][:ip] %>
+    hostgroups    all,linux,monitoring
 }
   <% end -%>
 <% else -%>
