@@ -56,11 +56,13 @@ end
 
 version = node['nagios']['server']['version']
 
-remote_file "#{Chef::Config[:file_cache_path]}/nagios-#{version}.tar.gz" do
-  source "#{node['nagios']['server']['url']}/nagios-#{version}.tar.gz"
-  checksum node['nagios']['server']['checksum']
-  action :create_if_missing
-end
+cookbook_file "#{Chef::Config[:file_cache_path]}/nagios-#{version}.tar.gz"
+
+#remote_file "#{Chef::Config[:file_cache_path]}/nagios-#{version}.tar.gz" do
+#  source "#{node['nagios']['server']['url']}/nagios-#{version}.tar.gz"
+#  checksum node['nagios']['server']['checksum']
+#  action :create_if_missing
+#end
 
 bash "compile-nagios" do
   cwd Chef::Config[:file_cache_path]

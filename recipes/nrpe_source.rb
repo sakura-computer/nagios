@@ -20,11 +20,13 @@
 
 nrpe_version = node['nagios']['nrpe']['version']
 
-remote_file "#{Chef::Config[:file_cache_path]}/nrpe-#{nrpe_version}.tar.gz" do
-  source "#{node['nagios']['nrpe']['url']}/nrpe-#{nrpe_version}.tar.gz"
-  checksum node['nagios']['nrpe']['checksum']
-  action :create_if_missing
-end
+cookbook_file "#{Chef::Config[:file_cache_path]}/nrpe-#{nrpe_version}.tar.gz"
+
+#remote_file "#{Chef::Config[:file_cache_path]}/nrpe-#{nrpe_version}.tar.gz" do
+#  source "#{node['nagios']['nrpe']['url']}/nrpe-#{nrpe_version}.tar.gz"
+#  checksum node['nagios']['nrpe']['checksum']
+#  action :create_if_missing
+#end
 
 # handle a full install vs a plugin install.  plugin installs are called via the
 # server_source.rb recipe.  full installs are called via client_source.rb
