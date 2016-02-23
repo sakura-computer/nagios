@@ -19,7 +19,7 @@ define host {
   use           server
   address       <%= value[:ip] %>
   hostgroups    all,linux,conference
-    _BBB_SALT     <%= `curl https://#{node[:monitoring][:rails_app_host]}/bigbluebutton/servers/salt?ip=#{key}.#{node[:monitoring][:domain_name]}` %>
+    _BBB_SALT     <%= `curl #{node[:monitoring][:rails_app_protocol]}://#{node[:monitoring][:rails_app_host]}/bigbluebutton/servers/salt?ip=#{key}.#{node[:monitoring][:domain_name]}` %>
     _BBB_URL      <%= "http://#{key}.#{node[:monitoring][:domain_name]}/bigbluebutton/" %>
   _BBB_PORT     80
 }
